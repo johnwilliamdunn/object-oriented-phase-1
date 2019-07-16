@@ -13,9 +13,20 @@ class author implements /JsonSerializable {
  **/
    private $authorAvatarUrl;
 /** authorActivationToken that is sent for security purposes
- * @var Uuid authorActivation token
- */
+ * @var Uuid authorActivationToken
+ **/
    private $authorActivationToken;
-   /**
+   /** authorEmail provides the author's email address
+	 * @var Uuid authorEmail
+	 **/
+   private $authorEmail;
+   /** authorHash provides login password
+	 * @var authorHash
+	 **/
+   private $authorHash;
+   /** authorUsername provides unique sign on name
+	 * @var authorUsername
+	 **/
+   private $authorUsername;
 
 }
