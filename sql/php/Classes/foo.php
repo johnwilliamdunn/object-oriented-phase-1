@@ -23,26 +23,47 @@ class author implements /JsonSerializable {
 	 **/
    private $authorEmail;
    /** authorHash provides login password
-	 * @var authorHash
+	 * @var string authorHash
 	 **/
    private $authorHash;
    /** authorUsername provides unique sign on name
-	 * @var authorUsername
+	 * @var  string authorUsername
 	 **/
    private $authorUsername;
    /**accessor method for obtaining author id
-	 * @return authorEmail
+	 * @var string authorEmail
 	 **/
    public function getauthorId() {
    	return ($this->authorId);
 	}
 	/**accessor method for obtaining author avatar id
-	 * @return authorAvatarUrl
+	 * @var string authorAvatarUrl
 	 **/
 	public function getauthorAvatarUrl() {
 		return ($this->authorAvatarUrl);
 	}
 	/**accessor method for obtaining
+	 * @var string authorActivationToken
+	 **/
+	public function getauthorActivationToken() {
+		return ($this->authorActivationToken);
+	}
+	/**accessor method for obtaining authorEmail
+	 * @var string authorEmail
+	 **/
+	public function getauthoremail() {
+		return ($this->authorEmail);
+	}
+	/**accessor method for obtaining authorHash
+	 * @var string authorHash
+	 **/
+	public function getauthorHash
+	   return ($this->authorHash);
+	/**accessor method for authorUsername
+	 * @var string authorUserName
+	 **/
+	public function getauthorUserName
+	    return ($this->authorUserName);
 
 
 }
