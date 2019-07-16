@@ -1,6 +1,8 @@
 <?php
 namespace jdunn33;
-//Adding Class//
+/**Adding Class
+*
+**/
 class author implements /JsonSerializable {
 	use ValidateAuthor;
 	use ValidateAuthorId;
