@@ -8,8 +8,14 @@ class author implements /JsonSerializable {
 	 * @var Uuid $authorId
 	 **/
 	private $authorId;
-/** id of the Author that is sent, this is the Foriegn Key
- *
+/** avatarUrl of the Author that is sent, this is the Foriegn Key
+ * @var Uuid authorAvatarId
  **/
+   private $authorAvatarUrl;
+/** authorActivationToken that is sent for security purposes
+ * @var Uuid authorActivation token
+ */
+   private $authorActivationToken;
+   /**
 
 }
