@@ -30,5 +30,19 @@ class author implements /JsonSerializable {
 	 * @var authorUsername
 	 **/
    private $authorUsername;
+   /**accessor method for obtaining author id
+	 * @return authorEmail
+	 **/
+   public function getauthorId() {
+   	return ($this->authorId);
+	}
+	/**accessor method for obtaining author avatar id
+	 * @return authorAvatarUrl
+	 **/
+	public function getauthorAvatarUrl() {
+		return ($this->authorAvatarUrl);
+	}
+	/**accessor method for obtaining
+
 
 }
