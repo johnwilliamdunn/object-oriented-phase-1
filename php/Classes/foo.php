@@ -1,11 +1,17 @@
 <?php
 namespace jdunn33;
+
+require_once("autoload.php");
+require_once(dirname(__DIR__) . "/vendor/autoload.php");
+
+use Ramsey\Uuid\Uuid;
+
 /**Adding Class
 *
 **/
-class author implements /JsonSerializable {
-	use ValidateAuthor;
-	use ValidateAuthorId;
+class author implements \JsonSerializable {
+	use ValidateDate;
+	use ValidateUuid;
 	/**id for the author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
