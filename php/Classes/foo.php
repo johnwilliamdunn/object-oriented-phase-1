@@ -63,8 +63,9 @@ class author implements \JsonSerializable {
 	/**accessor method for obtaining authorHash
 	 * @var string authorHash
 	 **/
-	public function getauthorHash
-	   return ($this->authorHash);
+	public function getauthorHash() {
+		return ($this->authorHash);
+	}
 	/**accessor method for authorUsername
 	 * @var string authorUserName
 	 **/
