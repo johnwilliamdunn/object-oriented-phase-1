@@ -2,17 +2,14 @@
 namespace Jdunn\ObjectOriented;
 
 require_once("Autoload.php");
-require_once(dirname(__DIR__) . "/vendor/Autoload.php");
+require_once(dirname(__DIR__) . "/Autoload.php");
 
-use http\Encoding\Stream;
-use http\QueryString;
 use Ramsey\Uuid\Uuid;
 
 /**Adding Class Author
 *
 **/
 class author implements \JsonSerializable {
-	use ValidateDate;
 	use ValidateUuid;
 	/**
 	 * id for the author; this is the primary key
@@ -104,52 +101,34 @@ class author implements \JsonSerializable {
 	public function getAuthorAvatarUrl() {
 		return ($this->authorAvatarUrl);
 	}
+
+	/**
+	 * mutator method for author content
+	 *
+	 * @param string $newAuthorAvatarUrl new set for author avatar url
+	 * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
+	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
+	 * @thros \TypeError if $setAuthorAvatarUrl is not a string
+	 **/
+	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
+		try {
+			//validate url for author//
+			$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
+
+			if(strlen($newAuthorAvatarUrl) !=0) {
+				throw (new \RangeException("URL id too large"));
+			}
+
+			//store Author Avatar Url//
+			$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
+		}
+
 	/**accessor method for obtaining
 	 * @var string authorActivationToken
 	 **/
 	public function getAuthorActivationToken() {
 		return ($this->authorActivationToken);
-	}
-	/**accessor method for obtaining authorEmail
-	 * @var string authorEmail
-	 **/
-	public function getAuthoremail() {
-		return ($this->authorEmail);
-	}
-	/**accessor method for obtaining authorHash
-	 * @var string authorHash
-	 **/
-	public function getAuthorHash() {
-		return ($this->authorHash);
-	}
-	/**accessor method for authorUsername
-	 * @var string authorUserName
-	 **/
-	public function getAuthorUserName
-	    return ($this->authorUserName);
-
-
-
-/**
- * mutator method for author content
- *
- * @param string $newAuthorAvatarUrl new set for author avatar url
- * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
- * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
- * @thros \TypeError if $setAuthorAvatarUrl is not a string
- **/
-public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
-	try {
-		//validate url for author//
-		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
-		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
-
-		if(strlen($newAuthorAvatarUrl) !=0) {
-			throw (new \RangeException("URL id too large"));
-		}
-
-		//store Author Avatar Url//
-		$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
 	}
 
 	/**
@@ -161,45 +140,69 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 	 **/
 	public function setAuthorActivationToken(string $newAuthorActivationToken) {
 
-		$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
-		//if string is too long throw range exception//
-		if(strlen($newAuthorActivationToken)) {
-			throw (new \TypeError("Invalid length"));
+			$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
+			//if string is too long throw range exception//
+			if(strlen($newAuthorActivationToken)) {
+				throw (new \TypeError("Invalid length"));
+			}
+			$this->AuthorActivationToken = $newAuthorActivationToken;
 		}
-		$this->AuthorActivationToken = $newAuthorActivationToken;
-}
 
-		/**
-		 * mutator for author email
-		 *
-		 * @param string $newAuthorEmail author email provided
-		 * @throw \RangeException if exceeds character limits
-		 * @throw \TypeError if value type is not correct
-		 **/
+	/**accessor method for obtaining authorEmail
+	 * @var string authorEmail
+	 **/
+	public function getAuthoremail() {
+		return ($this->authorEmail);
+	}
+
+	/**
+	 * mutator for author email
+	 *
+	 * @param string $newAuthorEmail author email provided
+	 * @throw \RangeException if exceeds character limits
+	 * @throw \TypeError if value type is not correct
+	 **/
 		public function setAuthorEmail($newAuthorEmail) {
 			$newAuthorEmail = filter_var($newAuthorEmail, FILTER_SANITIZE_STRING);
 			//if character string is too long throw error exception//
-		if(strlen($newAuthorEmail)) {
-			throw(new \TypeError("invalid length"));
+			if(strlen($newAuthorEmail)) {
+				throw(new \TypeError("invalid length"));
+			}
+			$this->AuthorEmail = $newAuthorEmail;
 		}
-		$this->AuthorEmail = $newAuthorEmail;
-}
 
-		/**
-		 *mutator for Hash/passwrd
-		 *
-		 * @param string $newAuthorHash value for hash/passwrd
-		 * @throw \RangeException if exceeds character limits
-		 * @throw \TypeError if value type is not correct
- 		**/
-		public function setAuthorHash($newAuthorHash) {
-		$newAuthorHash = filter_var($newAuthorHash,FILTER_SANITIZE_STRING);
-		//if character string is too long throw error exception//
-		if(strlen($newAuthorHash)) {
-		throw(new \TypeError("invalid length"));
-		}
-		$this->authorHash = $newAuthorHash;
+
+	/**accessor method for obtaining authorHash
+	 * @var string authorHash
+	 **/
+	public function getAuthorHash() {
+		return ($this->authorHash);
 	}
+
+	/**
+	 *mutator for Hash/passwrd
+	 *
+	 * @param string $newAuthorHash value for hash/passwrd
+	 * @throw \RangeException if exceeds character limits
+	 * @throw \TypeError if value type is not correct
+	 **/
+		public function setAuthorHash($newAuthorHash) {
+			$newAuthorHash = filter_var($newAuthorHash,FILTER_SANITIZE_STRING);
+			//if character string is too long throw error exception//
+			if(strlen($newAuthorHash)) {
+				throw(new \TypeError("invalid length"));
+			}
+			$this->authorHash = $newAuthorHash;
+		}
+
+
+	/**accessor method for authorUsername
+	 * @var string authorUserName
+	 **/
+	public function getAuthorUserName
+	    return ($this->authorUserName);
+
+
 		/**
 		 * mutator for author user name
 		 *
