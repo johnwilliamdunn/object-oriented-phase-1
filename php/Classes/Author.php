@@ -225,12 +225,10 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 
 		$fields["authorId"] = $this->authorId->toString();
 		$fields["authorAvatarUrl"] = $this->authorAvatarUrl->toString();
-		$fields["authorActivationToken"] =
+		$fields["authorActivationToken"] = $this->authorActivationToken->toString();
+		$fields["authorEmail"] = $this->authorEmail->toString();
+		$fields["authorHash"] = $this->authorHash->toString();
+		$fields["authorUserName"] = $this->authorUsername->toString();
 
-		//format the date so that the front end can consume it
-		$fields["tweetDate"] = round(floatval($this->tweetDate->format("U.u")) * 1000);
-		return($fields);
 	}
-
-
 };
