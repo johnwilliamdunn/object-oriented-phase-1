@@ -140,8 +140,8 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
 		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
 
-		if(strlen($newAuthorAvatarUrl)) {
-			throw (new \PDOException("URL content is invalid"));
+		if(strlen($newAuthorAvatarUrl) !=0) {
+			throw (new \InvalidArgumentException("invalid URL"));
 		}
 	}
 
