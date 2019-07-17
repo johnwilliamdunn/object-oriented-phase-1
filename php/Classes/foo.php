@@ -4,6 +4,8 @@ namespace jdunn33;
 require_once("autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 
+use http\Encoding\Stream;
+use http\QueryString;
 use Ramsey\Uuid\Uuid;
 
 /**Adding Class
@@ -141,11 +143,27 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
 
 		if(strlen($newAuthorAvatarUrl) !=0) {
-			throw (new \InvalidArgumentException("invalid URL"));
+			throw (new \RangeException("URL id too large"));
 		}
+
+		//store Author Avatar Url//
+		$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
 	}
 
-	// convert and store the author id
-	$this->authorId = $uuid;
+	/**
+	 * mutator for author verification
+	 *
+	 * @param string $newAuthorActivationToken author verification token
+	 * @throw \RangeException if exceeds character limit
+	 * @throw \TypeError if type is not a string
+	 **/
+	public function setAuthorActivationToken(string $newAuthorActivationToken) {
+
+		$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
+		//if string is too long throw range exception//
+		if(strlen($newAuthorActivationToken)) {
+			throw (new \TypeError("Invalid length"))
+		}
+	}
 }
 };
