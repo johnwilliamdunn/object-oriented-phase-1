@@ -47,8 +47,16 @@ class author implements \JsonSerializable {
 	 * @param string $authorEmail author email address initial submission
 	 * @param string $authorHash author created password stored here
 	 * @param string $authorUserName user name created stored here
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
 	 */
-   /**accessor method for obtaining author id
+
+	public function __construct() {
+	}
+
+	/**accessor method for obtaining author id
 	 * @var string $authorId
 	 **/
    public function getauthorId() {
