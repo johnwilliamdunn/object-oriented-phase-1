@@ -2,7 +2,6 @@
 namespace Jdunn\ObjectOriented;
 
 require_once("Autoload.php");
-require_once(dirname(__DIR__) . "/Autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
@@ -50,7 +49,7 @@ class author implements \JsonSerializable {
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
-	 */
+	 **/
 
 	public function __construct($authorId, $authorActivationToken, $authorEmail, $authorHash, $authorUsername) {
 		try {
