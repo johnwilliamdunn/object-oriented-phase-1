@@ -75,7 +75,7 @@ class author implements \JsonSerializable {
 	 * @var string $authorId
 	 **/
    public function getAuthorId() {
-   	return ($this->AuthorId);
+   	return ($this->authorId);
 	}
 
 	/**
@@ -102,31 +102,31 @@ class author implements \JsonSerializable {
 	 * @var string $authorAvatarUrl
 	 **/
 	public function getAuthorAvatarUrl() {
-		return ($this->AuthorAvatarUrl);
+		return ($this->authorAvatarUrl);
 	}
 	/**accessor method for obtaining
 	 * @var string authorActivationToken
 	 **/
 	public function getAuthorActivationToken() {
-		return ($this->AuthorActivationToken);
+		return ($this->authorActivationToken);
 	}
 	/**accessor method for obtaining authorEmail
 	 * @var string authorEmail
 	 **/
 	public function getAuthoremail() {
-		return ($this->AuthorEmail);
+		return ($this->authorEmail);
 	}
 	/**accessor method for obtaining authorHash
 	 * @var string authorHash
 	 **/
 	public function getAuthorHash() {
-		return ($this->AuthorHash);
+		return ($this->authorHash);
 	}
 	/**accessor method for authorUsername
 	 * @var string authorUserName
 	 **/
 	public function getAuthorUserName
-	    return ($this->AuthorUserName);
+	    return ($this->authorUserName);
 
 
 
