@@ -1,5 +1,5 @@
 <?php
-namespace jdunn33;
+namespace jdunn33@cnm.edu;
 
 require_once("autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
@@ -183,11 +183,21 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		$this->AuthorEmail = $newAuthorEmail;
 }
 
-/**
- *mutator for Hash/passwrd
- *
- * @param string $newAuthorHash value for hash/passwrd
- * @throw \RangeException if exceeds character limits
- * @throw \TypeError if value type is not correct
- */
+		/**
+		 *mutator for Hash/passwrd
+		 *
+		 * @param string $newAuthorHash value for hash/passwrd
+		 * @throw \RangeException if exceeds character limits
+		 * @throw \TypeError if value type is not correct
+ 		**/
+		public function setAuthorHash($newAuthorHash) {
+		$newAuthorHash = filter_var($newAuthorHash,FILTER_SANITIZE_STRING);
+		//if character string is too long throw error exception
+		if(strlen($newAuthorHash)) {
+		throw(new \TypeError("invalid length"));
+		}
+		$this->authorHash = $newAuthorHash;
+	}
+}
+
 };
