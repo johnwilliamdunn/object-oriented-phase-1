@@ -1,8 +1,8 @@
 <?php
 namespace jdunn33@cnm.edu;
 
-require_once("autoload.php");
-require_once(dirname(__DIR__) . "/vendor/autoload.php");
+require_once("Autoload.php");
+require_once(dirname(__DIR__) . "/vendor/Autoload.php");
 
 use http\Encoding\Stream;
 use http\QueryString;
