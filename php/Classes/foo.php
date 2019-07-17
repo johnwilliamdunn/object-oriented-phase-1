@@ -40,6 +40,10 @@ class author implements \JsonSerializable {
 
 	/**
 	 * constructor for Author
+	 *
+	 * @param Uuid $authorId id of author user
+	 * @param string $authorAvatarUrl url for author avatar
+	 * @param string $authorActivationToken for verification/activation
 	 */
    /**accessor method for obtaining author id
 	 * @var string $authorId
