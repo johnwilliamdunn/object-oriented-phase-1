@@ -1,6 +1,5 @@
 <?php
-class author
 
-$bar = new author;
-$bar-> do_author();
-?>
+require_once("../Classes/Author.php");
+
+$johndunn = new Author; ()

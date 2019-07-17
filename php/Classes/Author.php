@@ -8,7 +8,7 @@ use http\Encoding\Stream;
 use http\QueryString;
 use Ramsey\Uuid\Uuid;
 
-/**Adding Class
+/**Adding Class Author
 *
 **/
 class author implements \JsonSerializable {
