@@ -38,7 +38,9 @@ class author implements \JsonSerializable {
 	 **/
    private $authorUsername;
 
-
+	/**
+	 * constructor for Author
+	 */
    /**accessor method for obtaining author id
 	 * @var string $authorId
 	 **/
@@ -78,25 +80,42 @@ class author implements \JsonSerializable {
 /**
  * mutator method for author content
  *
- * @param string $setAuthorId new value for author id
+ * @param Uuid\ string $newAuthorId new value for author id
  * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
  * @throws \RangeException if $setAuthorId is > 140 characters
  * @thros \TypeError if $setAuthorId is not a string
  **/
-public function setAuthorContent(string $newAuthorId) : void {
-	// verify the tweet content is secure
-	$newTweetContent = trim($newTweetContent);
-	$newTweetContent = filter_var($newTweetContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-	if(empty($newTweetContent) === true) {
-		throw(new \InvalidArgumentException("tweet content is empty or insecure"));
+public function setAuthorId(string $newAuthorId) : void {
+	try {
+		         //validate uuid for authorId//
+		$uuid = self::validateUuid($newAuthorId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
-	// verify the tweet content will fit in the database
-	if(strlen($newTweetContent) > 140) {
-		throw(new \RangeException("tweet content too large"));
+	// convert and store the author id
+	$this->authorId = $uuid;
+}
+
+/**
+ * mutator method for author content
+ *
+ * @param Uuid\ string $newAuthorAvatarUrl new value for author avatar url
+ * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
+ * @throws \RangeException if $setAuthorId is > 140 characters
+ * @thros \TypeError if $setAuthorId is not a string
+ **/
+public function setAuthorId(string $newAuthorId) : void {
+	try {
+		//validate uuid for authorId//
+		$uuid = self::validateUuid($newAuthorId);
+	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		$exceptionType = get_class($exception);
+		throw(new $exceptionType($exception->getMessage(), 0, $exception));
 	}
 
-	// store the tweet content
-	$this->tweetContent = $newTweetContent;
+	// convert and store the author id
+	$this->authorId = $uuid;
 }
 };
