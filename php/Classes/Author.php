@@ -78,7 +78,26 @@ class author implements \JsonSerializable {
    	return ($this->AuthorId);
 	}
 
+	/**
+	 * mutator method for author content
+	 *
+	 * @param Uuid\ string $newAuthorId new value for author id
+	 * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
+	 * @throws \RangeException if $setAuthorId is > 140 characters
+	 * @thros \TypeError if $setAuthorId is not a string
+	 **/
+	public function setAuthorId(string $newAuthorId) : void {
+		try {
+			//validate uuid for authorId//
+			$uuid = self::validateUuid($newAuthorId);
+		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+			$exceptionType = get_class($exception);
+			throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		}
 
+		// convert and store the author id
+		$this->authorId = $uuid;
+	}
 	/**accessor method for obtaining author avatar id
 	 * @var string $authorAvatarUrl
 	 **/
@@ -109,26 +128,7 @@ class author implements \JsonSerializable {
 	public function getAuthorUserName
 	    return ($this->AuthorUserName);
 
-/**
- * mutator method for author content
- *
- * @param Uuid\ string $newAuthorId new value for author id
- * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
- * @throws \RangeException if $setAuthorId is > 140 characters
- * @thros \TypeError if $setAuthorId is not a string
- **/
-public function setAuthorId(string $newAuthorId) : void {
-	try {
-		         //validate uuid for authorId//
-		$uuid = self::validateUuid($newAuthorId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
-	}
 
-	// convert and store the author id
-	$this->authorId = $uuid;
-}
 
 /**
  * mutator method for author content
