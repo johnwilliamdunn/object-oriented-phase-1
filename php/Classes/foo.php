@@ -129,18 +129,20 @@ public function setAuthorId(string $newAuthorId) : void {
 /**
  * mutator method for author content
  *
- * @param Uuid\ string $newAuthorAvatarUrl new value for author avatar url
- * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
- * @throws \RangeException if $setAuthorId is > 140 characters
- * @thros \TypeError if $setAuthorId is not a string
+ * @param string $newAuthorAvatarUrl new set for author avatar url
+ * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
+ * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
+ * @thros \TypeError if $setAuthorAvatarUrl is not a string
  **/
-public function setAuthorId(string $newAuthorId) : void {
+public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 	try {
-		//validate uuid for authorId//
-		$uuid = self::validateUuid($newAuthorId);
-	} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		$exceptionType = get_class($exception);
-		throw(new $exceptionType($exception->getMessage(), 0, $exception));
+		//validate url for author//
+		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
+
+		if(strlen($newAuthorAvatarUrl)) {
+			throw (new \PDOException("URL content is invalid"));
+		}
 	}
 
 	// convert and store the author id
