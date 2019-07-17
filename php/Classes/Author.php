@@ -164,6 +164,15 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		if(strlen($newAuthorActivationToken)) {
 			throw (new \TypeError("Invalid length"))
 		}
-	}
+		$this->AuthorActivationToken = $newAuthorActivationToken;
 }
+
+/**
+ * mutator for author email
+ *
+ * @param string $newAuthorEmail author email provided
+ * @throw \RangeException if exceeds character limits
+ * @throw \TypeError if value type is not correct
+ **/
+public function
 };
