@@ -12,7 +12,8 @@ use Ramsey\Uuid\Uuid;
 class author implements \JsonSerializable {
 	use ValidateDate;
 	use ValidateUuid;
-	/**id for the author; this is the primary key
+	/**
+	 * id for the author; this is the primary key
 	 * @var Uuid $authorId
 	 **/
 	private $authorId;
@@ -72,59 +73,28 @@ class author implements \JsonSerializable {
 	public function getauthorUserName
 	    return ($this->authorUserName);
 
-public function __set($authorId, $value)
-{
-	$mutator = 'set' . ucfirst($authorId);
-	if (method_exists($authorId, $mutator) && is_callable(array($authorId, $mutator)))
-	{
-		$authorId->$mutator($value);
+/**
+ * mutator method for author content
+ *
+ * @param string $setAuthorId new value for author id
+ * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
+ * @throws \RangeException if $setAuthorId is > 140 characters
+ * @thros \TypeError if $setAuthorId is not a string
+ **/
+public function setTweetContent(string $newTweetContent) : void {
+	// verify the tweet content is secure
+	$newTweetContent = trim($newTweetContent);
+	$newTweetContent = filter_var($newTweetContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+	if(empty($newTweetContent) === true) {
+		throw(new \InvalidArgumentException("tweet content is empty or insecure"));
 	}
-	throw new Exception("{$authorId} is an invalid property.");
-}
-public function __set($authorAvatarUrl, $value)
-{
-	$mutator = 'set' . ucfirst($AuthorAvatarUrl);
-	if (method_exists($authorAvatarUrl, $mutator) && is_callable(array($authorAvatarUrl, $mutator)))
-	{
-		$authorAvatarUrl->$mutator($value);
+
+	// verify the tweet content will fit in the database
+	if(strlen($newTweetContent) > 140) {
+		throw(new \RangeException("tweet content too large"));
 	}
-	throw new Exception("{$authorAvatarUrl} is an invalid property.");
+
+	// store the tweet content
+	$this->tweetContent = $newTweetContent;
 }
-public function __set($name, $value)
-{
-	$mutator = 'set' . ucfirst($authorActivationToken);
-	if (method_exists($authorActivationToken, $mutator) && is_callable(array($authorActivationToken, $mutator)))
-	{
-		$authorActivationToken->$mutator($value);
-	}
-	throw new Exception("{$authorActivationToken} is an invalid property.");
-}
-public function __set($authorEmail, $value)
-{
-	$mutator = 'set' . ucfirst($authorEmail);
-	if (method_exists($authorEmail, $mutator) && is_callable(array($authorEmail, $mutator)))
-	{
-		$this->$mutator($value);
-	}
-	throw new Exception("{$authorEmail} is an invalid property.");
-}
-public function __set($authorHash, $value)
-{
-	$mutator = 'set' . ucfirst($authorHash);
-	if (method_exists($authorHash, $mutator) && is_callable(array($authorHash, $mutator)))
-	{
-		$authorHash->$mutator($value);
-	}
-	throw new Exception("{$authorHash} is an invalid property.");
-}
-public function __set($authorUsername, $value)
-{
-	$mutator = 'set' . ucfirst($authorUsername);
-	if (method_exists($authorUsername, $mutator) && is_callable(array($authorUsername, $mutator)))
-	{
-		$authorUsername->$mutator($value);
-	}
-	throw new Exception("{$authorUsername} is an invalid property.");
-}
-}
-}
+};
