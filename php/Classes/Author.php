@@ -2,14 +2,16 @@
 namespace Jdunn\ObjectOriented;
 
 require_once("Autoload.php");
+require_once (dirname(__DIR__) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
 /**Adding Class Author
-*
+* @package Jdunn\ObjectOriented
 **/
-class author implements \JsonSerializable {
+class Author implements \JsonSerializable {
 	use ValidateUuid;
+}
 	/**
 	 * id for the author; this is the primary key
 	 * @var Uuid $authorId;
@@ -44,7 +46,6 @@ class author implements \JsonSerializable {
 	 * @param string $newAuthorActivationToken for verification/activation
 	 * @param string $newAuthorEmail author email address initial submission
 	 * @param string $newAuthorHash author created password stored here
-	 * @param string $newAuthorUserName user name created stored here
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints
