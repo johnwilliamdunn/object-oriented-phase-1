@@ -14,37 +14,39 @@ class author implements \JsonSerializable {
 	use ValidateUuid;
 	/**
 	 * id for the author; this is the primary key
-	 * @var Uuid $authorId
+	 * @var Uuid $authorId;
 	 **/
 	private $authorId;
 /** avatarUrl of the Author that is sent, this is the Foriegn Key
- * @var Uuid authorAvatarId
+ * @var string $authorAvatarId;
  **/
    private $authorAvatarUrl;
 /** authorActivationToken that is sent for security purposes
- * @var Uuid authorActivationToken
+ * @var string $authorActivationToken;
  **/
    private $authorActivationToken;
    /** authorEmail provides the author's email address
-	 * @var Uuid authorEmail
+	 * @var string $authorEmail;
 	 **/
    private $authorEmail;
    /** authorHash provides login password
-	 * @var string authorHash
+	 * @var string $authorHash;
 	 **/
    private $authorHash;
    /** authorUsername provides unique sign on name
-	 * @var  string authorUsername
+	 * @var  string $authorUsername;
 	 **/
    private $authorUsername;
+
+
    /**accessor method for obtaining author id
-	 * @var string authorEmail
+	 * @var string $authorId
 	 **/
    public function getauthorId() {
    	return ($this->authorId);
 	}
 	/**accessor method for obtaining author avatar id
-	 * @var string authorAvatarUrl
+	 * @var string $authorAvatarUrl
 	 **/
 	public function getauthorAvatarUrl() {
 		return ($this->authorAvatarUrl);
@@ -81,7 +83,7 @@ class author implements \JsonSerializable {
  * @throws \RangeException if $setAuthorId is > 140 characters
  * @thros \TypeError if $setAuthorId is not a string
  **/
-public function setTweetContent(string $newTweetContent) : void {
+public function setAuthorContent(string $newAuthorId) : void {
 	// verify the tweet content is secure
 	$newTweetContent = trim($newTweetContent);
 	$newTweetContent = filter_var($newTweetContent, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
