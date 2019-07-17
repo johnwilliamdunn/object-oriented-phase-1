@@ -162,17 +162,32 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
 		//if string is too long throw range exception//
 		if(strlen($newAuthorActivationToken)) {
-			throw (new \TypeError("Invalid length"))
+			throw (new \TypeError("Invalid length"));
 		}
 		$this->AuthorActivationToken = $newAuthorActivationToken;
 }
 
+		/**
+		 * mutator for author email
+		 *
+		 * @param string $newAuthorEmail author email provided
+		 * @throw \RangeException if exceeds character limits
+		 * @throw \TypeError if value type is not correct
+		 **/
+		public function setAuthorEmail($newAuthorEmail) {
+			$newAuthorEmail = filter_var($newAuthorEmail, FILTER_SANITIZE_STRING);
+			//if character string is too long throw error exception//
+		if(strlen($newAuthorEmail)) {
+			throw(new \TypeError("invalid length"));
+		}
+		$this->AuthorEmail = $newAuthorEmail;
+}
+
 /**
- * mutator for author email
+ *mutator for Hash/passwrd
  *
- * @param string $newAuthorEmail author email provided
+ * @param string $newAuthorHash value for hash/passwrd
  * @throw \RangeException if exceeds character limits
  * @throw \TypeError if value type is not correct
- **/
-public function
+ */
 };
