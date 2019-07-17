@@ -44,6 +44,9 @@ class author implements \JsonSerializable {
 	 * @param Uuid $authorId id of author user
 	 * @param string $authorAvatarUrl url for author avatar
 	 * @param string $authorActivationToken for verification/activation
+	 * @param string $authorEmail author email address initial submission
+	 * @param string $authorHash author created password stored here
+	 * @param string $authorUserName user name created stored here
 	 */
    /**accessor method for obtaining author id
 	 * @var string $authorId
