@@ -1,5 +1,5 @@
 <?php
-namespace jdunn33@cnm.edu;
+namespace Jdunn\ObjectOriented;
 
 require_once("Autoload.php");
 require_once(dirname(__DIR__) . "/vendor/Autoload.php");
@@ -43,12 +43,12 @@ class author implements \JsonSerializable {
 	/**
 	 * constructor for Author
 	 *
-	 * @param Uuid $authorId id of author user
-	 * @param string $authorAvatarUrl url for author avatar
-	 * @param string $authorActivationToken for verification/activation
-	 * @param string $authorEmail author email address initial submission
-	 * @param string $authorHash author created password stored here
-	 * @param string $authorUserName user name created stored here
+	 * @param Uuid $newAuthorId id of author user
+	 * @param string $newAuthorAvatarUrl url for author avatar
+	 * @param string $newAuthorActivationToken for verification/activation
+	 * @param string $newAuthorEmail author email address initial submission
+	 * @param string $newAuthorHash author created password stored here
+	 * @param string $newAuthorUserName user name created stored here
 	 * @throws \InvalidArgumentException if data types are not valid
 	 * @throws \RangeException if data values are out of bounds (e.g., strings too long, negative integers)
 	 * @throws \TypeError if data types violate type hints

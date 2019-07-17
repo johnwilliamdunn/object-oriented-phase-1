@@ -1,4 +1,5 @@
 <?php
+namespace Jdunn\ObjectOriented;
 
 require_once("../Classes/Author.php");
 
