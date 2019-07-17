@@ -53,7 +53,12 @@ class author implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 */
 
-	public function __construct() {
+	public function __construct($authorId, $authorActivationToken, $authorEmail, $authorHash, $authorUsername) {
+		try {
+			$this->setAuthorId($newAuthorId);
+			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
+			$this->setAuthorActivationToken($newAuthorActivationToken);
+		}
 	}
 
 	/**accessor method for obtaining author id
