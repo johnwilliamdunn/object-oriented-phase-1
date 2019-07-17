@@ -17,11 +17,11 @@ class author implements \JsonSerializable {
 	 * @var Uuid $authorId;
 	 **/
 	private $authorId;
-/** avatarUrl of the Author that is sent, this is the Foriegn Key
+/** avatarUrl value for author's avatar image
  * @var string $authorAvatarId;
  **/
    private $authorAvatarUrl;
-/** authorActivationToken that is sent for security purposes
+/** authorActivationToken that is for activation/verification
  * @var string $authorActivationToken;
  **/
    private $authorActivationToken;
