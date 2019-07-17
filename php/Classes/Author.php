@@ -215,7 +215,22 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
 		$this->authorUsername = $newAuthorUserName;
 
 	}
+/**
+ * formats the state variables for JSON serialization
+ *
+ * @return array resulting state variables to serialize
+ **/
+	public function jsonSerialize() : array {
+		$fields = get_object_vars($this);
 
-}
+		$fields["authorId"] = $this->authorId->toString();
+		$fields["authorAvatarUrl"] = $this->authorAvatarUrl->toString();
+		$fields["authorActivationToken"] =
+
+		//format the date so that the front end can consume it
+		$fields["tweetDate"] = round(floatval($this->tweetDate->format("U.u")) * 1000);
+		return($fields);
+	}
+
 
 };
