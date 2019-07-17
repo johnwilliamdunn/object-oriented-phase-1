@@ -74,38 +74,40 @@ class author implements \JsonSerializable {
 	/**accessor method for obtaining author id
 	 * @var string $authorId
 	 **/
-   public function getauthorId() {
-   	return ($this->authorId);
+   public function getAuthorId() {
+   	return ($this->AuthorId);
 	}
+
+
 	/**accessor method for obtaining author avatar id
 	 * @var string $authorAvatarUrl
 	 **/
-	public function getauthorAvatarUrl() {
-		return ($this->authorAvatarUrl);
+	public function getAuthorAvatarUrl() {
+		return ($this->AuthorAvatarUrl);
 	}
 	/**accessor method for obtaining
 	 * @var string authorActivationToken
 	 **/
-	public function getauthorActivationToken() {
-		return ($this->authorActivationToken);
+	public function getAuthorActivationToken() {
+		return ($this->AuthorActivationToken);
 	}
 	/**accessor method for obtaining authorEmail
 	 * @var string authorEmail
 	 **/
-	public function getauthoremail() {
-		return ($this->authorEmail);
+	public function getAuthoremail() {
+		return ($this->AuthorEmail);
 	}
 	/**accessor method for obtaining authorHash
 	 * @var string authorHash
 	 **/
-	public function getauthorHash() {
-		return ($this->authorHash);
+	public function getAuthorHash() {
+		return ($this->AuthorHash);
 	}
 	/**accessor method for authorUsername
 	 * @var string authorUserName
 	 **/
-	public function getauthorUserName
-	    return ($this->authorUserName);
+	public function getAuthorUserName
+	    return ($this->AuthorUserName);
 
 /**
  * mutator method for author content
