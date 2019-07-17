@@ -192,12 +192,30 @@ public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
  		**/
 		public function setAuthorHash($newAuthorHash) {
 		$newAuthorHash = filter_var($newAuthorHash,FILTER_SANITIZE_STRING);
-		//if character string is too long throw error exception
+		//if character string is too long throw error exception//
 		if(strlen($newAuthorHash)) {
 		throw(new \TypeError("invalid length"));
 		}
 		$this->authorHash = $newAuthorHash;
 	}
+		/**
+		 * mutator for author user name
+		 *
+		 * @param string $newAuthorUserName username provided by user
+		 * @throw \RangeException
+		 * @throw \TypeError if value type is not correct
+		 **/
+		public function setAuthorUserName($newAuthorUserName) {
+			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
+			//if character string is too long throw exceptiion//
+		if(strlen($newAuthorUserName) >32) {
+			throw(new \RangeException("invalid exceeds length (32 characters"));
+
+		}
+		$this->authorUsername = $newAuthorUserName;
+
+	}
+
 }
 
 };
