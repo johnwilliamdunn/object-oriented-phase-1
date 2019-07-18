@@ -80,21 +80,18 @@ class Author implements \JsonSerializable {
 	/**
 	 * mutator method for author content
 	 *
-	 * @param Uuid\ string $newAuthorId new value for author id
-	 * @throws \InvalidArgumentException if $setAuthorId is not a string or insecure
-	 * @throws \RangeException if $setAuthorId is > 140 characters
-	 * @thros \TypeError if $setAuthorId is not a string
+	 * @param  Uuid| string $newAuthorId value of new author id
+	 * @throws \RangeException if $newAuthorId is not positive
+	 * @throws \TypeError if the profile Id is not
 	 **/
-	public function setAuthorId(string $newAuthorId) : void {
+	public function setAuthorId($newAuthorId): void {
 		try {
-			//validate uuid for authorId//
 			$uuid = self::validateUuid($newAuthorId);
 		} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
-
-		// convert and store the author id
+		// convert and store the profile id
 		$this->authorId = $uuid;
 	}
 	/**accessor method for obtaining author avatar id
@@ -238,7 +235,7 @@ class Author implements \JsonSerializable {
 		 **/
 		public function setAuthorUserName($newAuthorUserName) {
 			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
-			//if character string is too long throw exceptiion//
+			//if character string is too long throw exception//
 		if(strlen($newAuthorUserName) >32) {
 			throw(new \RangeException("invalid exceeds length (32 characters"));
 
