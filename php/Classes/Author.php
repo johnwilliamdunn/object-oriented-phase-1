@@ -71,7 +71,7 @@ class Author implements \JsonSerializable {
 	}
 
 	/**accessor method for obtaining author id
-	 * @var string $authorId
+	 * @return  string $authorId
 	 **/
 	public function getAuthorId() {
 		return ($this->authorId);
@@ -161,23 +161,23 @@ class Author implements \JsonSerializable {
 	}
 
 	/**accessor method for obtaining authorEmail
-	 * @var string authorEmail
+	 * @return  string authorEmail
 	 **/
-	public
-	function getAuthoremail() {
+
+	public function getAuthoremail() {
 		return ($this->authorEmail);
 	}
 
 	/**
 	 * mutator for author email
 	 *
-	 * @param string $newProfileEmail new value of email
+	 * @param string $newAuthorEmail new value of email
 	 * @throws \InvalidArgumentException if $newEmail is not a valid email or insecure
 	 * @throws \RangeException if $newEmail is > 128 characters
 	 * @throws \TypeError if $newEmail is not a string
 	 **/
-	public
-	function setAuthorEmail(string $newAuthorEmail): void {
+
+	public function setAuthorEmail(string $newAuthorEmail): void {
 		// verify the email is secure
 		$newAuthorEmail = trim($newAuthorEmail);
 		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
@@ -195,8 +195,8 @@ class Author implements \JsonSerializable {
 	/**accessor method for obtaining authorHash
 	 * @var string authorHash
 	 **/
-	public
-	function getAuthorHash() {
+
+	public function getAuthorHash() {
 		return ($this->authorHash);
 	}
 
@@ -229,7 +229,7 @@ class Author implements \JsonSerializable {
 	}
 
 	/**accessor method for authorUsername
-	 * @return  string authorUserName
+	 * @return string authorUserName
 	 **/
 
 	public function getAuthorUsername(): string {
@@ -243,12 +243,12 @@ class Author implements \JsonSerializable {
 		 * @throws \RangeException
 		 * @throws \TypeError if value type is not correct
 		 **/
-		public
-		function setAuthorUserName($newAuthorUserName) {
+
+		   public function setAuthorUserName($newAuthorUserName) {
 			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
 			//if character string is too long throw exception//
 			if(strlen($newAuthorUserName) > 32) {
-				throw(new \RangeException("invalid exceeds length (32 characters"));
+				throw(new \RangeException("invalid, exceeds length (32 characters"));
 
 			}
 			$this->authorUsername = $newAuthorUserName;
@@ -260,8 +260,8 @@ class Author implements \JsonSerializable {
 		 *
 		 * @return array resulting state variables to serialize
 		 **/
-		public
-		function jsonSerialize(): array {
+
+		public function jsonSerialize(): array {
 			$fields = get_object_vars($this);
 
 			$fields["authorId"] = $this->authorId->toString();
@@ -270,3 +270,5 @@ class Author implements \JsonSerializable {
 
 		}
 	}
+
+}
