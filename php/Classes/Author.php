@@ -149,7 +149,11 @@ class Author implements \JsonSerializable {
 				throw (new \RangeException("Invalid length"));
 			}
 			//if argument is not a string, throw type exception//
-			$this->AuthorActivationToken = $newAuthorActivationToken;
+				if(!is_string($newAuthorActivationToken)) {
+					throw(new\TypeError("Invalid type, expected type string"));
+			}
+
+			$this->authorActivationToken = $newAuthorActivationToken;
 		}
 
 	/**accessor method for obtaining authorEmail
@@ -233,11 +237,8 @@ class Author implements \JsonSerializable {
 		$fields = get_object_vars($this);
 
 		$fields["authorId"] = $this->authorId->toString();
-		$fields["authorAvatarUrl"] = $this->authorAvatarUrl->toString();
-		$fields["authorActivationToken"] = $this->authorActivationToken->toString();
-		$fields["authorEmail"] = $this->authorEmail->toString();
-		$fields["authorHash"] = $this->authorHash->toString();
-		$fields["authorUserName"] = $this->authorUsername->toString();
+
+		return($fields);
 
 	}
-};
+}
