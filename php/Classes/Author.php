@@ -116,7 +116,7 @@ class Author implements \JsonSerializable {
 		try {
 			//validate url for author//
 			$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
-			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
+			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 			if(strlen($newAuthorAvatarUrl) >255) {
 				throw (new \RangeException("URL id too large"));
@@ -192,19 +192,29 @@ class Author implements \JsonSerializable {
 	/**
 	 *mutator for Hash/passwrd
 	 *
-	 * @param string $newAuthorHash value for hash/passwrd
-	 * @throw \RangeException if exceeds character limits
-	 * @throw \TypeError if value type is not correct
-	 **/
-		public function setAuthorHash($newAuthorHash) {
-			$newAuthorHash = filter_var($newAuthorHash,FILTER_SANITIZE_STRING);
-			//if character string is too long throw error exception//
-			if(strlen($newAuthorHash)) {
-				throw(new \TypeError("invalid length"));
+	 * @param string $newProfileHash
+	 * @throws \InvalidArgumentException if the hash is not secure
+	 * @throws \RangeException if the hash is not 128 characters
+	 * @throws \TypeError if profile hash is not a string
+	 */
+			public function setAuthorHash(string $newAuthorHash): void {
+				//enforce that the hash is properly formatted
+				$newAuthorHash = trim($newAuthorHash);
+				if(empty($newAuthorHash) === true) {
+					throw(new \InvalidArgumentException("profile password hash empty or insecure"));
+				}
+				//enforce the hash is really an Argon hash
+				$authorHashInfo = password_get_info($newAuthorHash);
+				if($authorHashInfo["algoName"] !== "argon2i") {
+					throw(new \InvalidArgumentException("profile hash is not a valid hash"));
+				}
+				//enforce that the hash is exactly 97 characters.
+				if(strlen($newAuthorHash) !== 97) {
+					throw(new \RangeException("profile hash must be 97 characters"));
+				}
+				//store the hash
+				$this->authorHash = $newAuthorHash;
 			}
-			$this->authorHash = $newAuthorHash;
-		}
-
 
 	/**accessor method for authorUsername
 	 * @var string authorUserName
