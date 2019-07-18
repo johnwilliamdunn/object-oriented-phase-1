@@ -141,8 +141,8 @@ class Author implements \JsonSerializable {
 	 * mutator for author verification
 	 *
 	 * @param string $newAuthorActivationToken author verification token
-	 * @throw \RangeException if exceeds character limit
-	 * @throw \TypeError if type is not a string
+	 * @throws \RangeException if exceeds character limit
+	 * @throws \TypeError if type is not a string
 	 **/
 	public
 	function setAuthorActivationToken(string $newAuthorActivationToken) {
@@ -240,8 +240,8 @@ class Author implements \JsonSerializable {
 		 * mutator for author user name
 		 *
 		 * @param string $newAuthorUserName username provided by user
-		 * @throw \RangeException
-		 * @throw \TypeError if value type is not correct
+		 * @throws \RangeException
+		 * @throws \TypeError if value type is not correct
 		 **/
 		public function setAuthorUserName($newAuthorUserName) {
 			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
