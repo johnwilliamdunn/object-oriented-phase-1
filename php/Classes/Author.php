@@ -117,7 +117,7 @@ class Author implements \JsonSerializable {
 			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 			if(strlen($newAuthorAvatarUrl) > 255) {
-				throw (new \RangeException("string too large"));
+				throw (new \RangeException("url is not valid"));
 			}
 			if(!is_string($newAuthorAvatarUrl)) {
 				throw(new\TypeError("Invalid type, expected type string"));
@@ -125,7 +125,7 @@ class Author implements \JsonSerializable {
 		}
 			//store Author Avatar Url//
 			if(filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL)) {
-				$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
+				$this->authorAvatarUrl = $newAuthorAvatarUrl;
 			}
 		}
 
@@ -229,11 +229,11 @@ class Author implements \JsonSerializable {
 	}
 
 	/**accessor method for authorUsername
-	 * @var string authorUserName
+	 * @return  string authorUserName
 	 **/
-	public
-	function getAuthorUserName
-	    return ($this->authorUserName);
+
+	public function getAuthorUsername(): string {
+		return $this->authorUsername;
 
 
 		/**
@@ -243,7 +243,8 @@ class Author implements \JsonSerializable {
 		 * @throws \RangeException
 		 * @throws \TypeError if value type is not correct
 		 **/
-		public function setAuthorUserName($newAuthorUserName) {
+		public
+		function setAuthorUserName($newAuthorUserName) {
 			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
 			//if character string is too long throw exception//
 			if(strlen($newAuthorUserName) > 32) {
@@ -253,18 +254,19 @@ class Author implements \JsonSerializable {
 			$this->authorUsername = $newAuthorUserName;
 
 		}
-/**
- * formats the state variables for JSON serialization
- *
- * @return array resulting state variables to serialize
- **/
-	public function jsonSerialize(): array {
-		$fields = get_object_vars($this);
 
-		$fields["authorId"] = $this->authorId->toString();
+		/**
+		 * formats the state variables for JSON serialization
+		 *
+		 * @return array resulting state variables to serialize
+		 **/
+		public
+		function jsonSerialize(): array {
+			$fields = get_object_vars($this);
 
-		return ($fields);
+			$fields["authorId"] = $this->authorId->toString();
 
+			return ($fields);
+
+		}
 	}
-
-}
