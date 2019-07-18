@@ -110,7 +110,7 @@ class Author implements \JsonSerializable {
 	 * @param string $newAuthorAvatarUrl new set for author avatar url
 	 * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
 	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
-	 * @thros \TypeError if $setAuthorAvatarUrl is not a string
+	 * @throws \TypeError if $setAuthorAvatarUrl is not a string
 	 **/
 	public function setAuthorAvatarUrl($newAuthorAvatarUrl)  {
 		try {
@@ -133,8 +133,8 @@ class Author implements \JsonSerializable {
 	 * @var string authorActivationToken
 	 **/
 	public function getAuthorActivationToken() {
-		return ($this->authorActivationToken);
-	}
+				return ($this->authorActivationToken);
+			}
 
 	/**
 	 * mutator for author verification
@@ -168,19 +168,25 @@ class Author implements \JsonSerializable {
 	/**
 	 * mutator for author email
 	 *
-	 * @param string $newAuthorEmail author email provided
-	 * @throw \RangeException if exceeds character limits
-	 * @throw \TypeError if value type is not correct
+	 * @param string $newProfileEmail new value of email
+	 * @throws \InvalidArgumentException if $newEmail is not a valid email or insecure
+	 * @throws \RangeException if $newEmail is > 128 characters
+	 * @throws \TypeError if $newEmail is not a string
 	 **/
-		public function setAuthorEmail($newAuthorEmail) {
-			$newAuthorEmail = filter_var($newAuthorEmail, FILTER_SANITIZE_STRING);
-			//if character string is too long throw error exception//
-			if(strlen($newAuthorEmail)) {
-				throw(new \TypeError("invalid length"));
+			public function setAuthorEmail(string $newAuthorEmail): void {
+				// verify the email is secure
+				$newAuthorEmail = trim($newAuthorEmail);
+				$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
+				if(empty($newAuthorEmail) === true) {
+					throw(new \InvalidArgumentException("profile email is empty or insecure"));
+				}
+				// verify the email will fit in the database
+				if(strlen($newAuthorEmail) > 128) {
+					throw(new \RangeException("profile email is too large"));
+				}
+				// store the email
+				$this->authorEmail = $newAuthorEmail;
 			}
-			$this->AuthorEmail = $newAuthorEmail;
-		}
-
 
 	/**accessor method for obtaining authorHash
 	 * @var string authorHash
