@@ -108,25 +108,19 @@ class Author implements \JsonSerializable {
 	 * @param string $newAuthorAvatarUrl new set for author avatar url
 	 * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
 	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
-	 * @throws \TypeError if $setAuthorAvatarUrl is not a string
 	 **/
-	public function setAuthorAvatarUrl($newAuthorAvatarUrl) {
-		try {
+	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
+
 			//validate url for author//
 			$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
 			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
 
 			if(strlen($newAuthorAvatarUrl) > 255) {
-				throw (new \RangeException("url is not valid"));
+				throw (new \RangeException("image url is too large"));
 			}
-			if(!is_string($newAuthorAvatarUrl)) {
-				throw(new\TypeError("Invalid type, expected type string"));
-			}
-		}
 			//store Author Avatar Url//
-			if(filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL)) {
 				$this->authorAvatarUrl = $newAuthorAvatarUrl;
-			}
+
 		}
 
 	/**accessor method for obtaining
@@ -217,7 +211,7 @@ class Author implements \JsonSerializable {
 		}
 		//enforce the hash is really an Argon hash
 		$authorHashInfo = password_get_info($newAuthorHash);
-		if($authorHashInfo["authorName"] !== "Jdunn") {
+		if($authorHashInfo["algoName"] !== "argon2i") {
 			throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 		}
 		//enforce that the hash is exactly 97 characters.
@@ -234,7 +228,7 @@ class Author implements \JsonSerializable {
 
 	public function getAuthorUsername(): string {
 		return $this->authorUsername;
-
+	}
 
 		/**
 		 * mutator for author user name
@@ -269,6 +263,6 @@ class Author implements \JsonSerializable {
 			return ($fields);
 
 		}
-	}
+
 
 }
