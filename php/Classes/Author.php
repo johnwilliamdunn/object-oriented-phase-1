@@ -55,7 +55,7 @@ class Author implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 **/
 
-	public function __construct($newAuthorId, $newAuthorAvatarUrl,$newAuthorActivationToken, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
+	public function __construct($newAuthorId, $newAuthorAvatarUrl, $newAuthorActivationToken, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
 		try {
 			$this->setAuthorId($newAuthorId);
 			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
@@ -96,7 +96,7 @@ class Author implements \JsonSerializable {
 		$this->authorId = $uuid;
 	}
 	/**accessor method for obtaining author avatar id
-	 * @var string $authorAvatarUrl
+	 * @return  string value of $authorAvatarUrl
 	 **/
 	public function getAuthorAvatarUrl() : string {
 		return ($this->authorAvatarUrl);
@@ -128,7 +128,7 @@ class Author implements \JsonSerializable {
 			}
 
 	/**accessor method for obtaining
-	 * @var string authorActivationToken
+	 * @return string value authorActivationToken
 	 **/
 	public function getAuthorActivationToken() {
 				return ($this->authorActivationToken);
