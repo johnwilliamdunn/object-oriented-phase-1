@@ -4,6 +4,7 @@ namespace Jdunn\ObjectOriented;
 require_once("Autoload.php");
 require_once (dirname(__DIR__) . "/vendor/autoload.php");
 
+use Deepdivedylan\DataDesign\ValidateDate;
 use Ramsey\Uuid\Uuid;
 
 /**Class Author
@@ -11,6 +12,7 @@ use Ramsey\Uuid\Uuid;
 **/
 class Author implements \JsonSerializable {
 	use ValidateUuid;
+	use ValidateDate;
 
 	/**
 	 * id for the author; this is the primary key
