@@ -6,7 +6,7 @@ require_once (dirname(__DIR__) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 
-/**Adding Class Author
+/**Class Author
 * @package Jdunn\ObjectOriented
 **/
 class Author implements \JsonSerializable {
@@ -98,7 +98,7 @@ class Author implements \JsonSerializable {
 	/**accessor method for obtaining author avatar id
 	 * @var string $authorAvatarUrl
 	 **/
-	public function getAuthorAvatarUrl() {
+	public function getAuthorAvatarUrl() : string {
 		return ($this->authorAvatarUrl);
 	}
 
@@ -110,19 +110,22 @@ class Author implements \JsonSerializable {
 	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
 	 * @thros \TypeError if $setAuthorAvatarUrl is not a string
 	 **/
-	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
+	public function setAuthorAvatarUrl($newAuthorAvatarUrl)  {
 		try {
 			//validate url for author//
 			$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
 			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL);
 
-			if(strlen($newAuthorAvatarUrl) !=0) {
+			if(strlen($newAuthorAvatarUrl) >255) {
 				throw (new \RangeException("URL id too large"));
 			}
-
+			if(!is_string($newAuthorAvatarUrl)) {
+				throw(new\TypeError("Invalid type, expected type string"));
+			}
 			//store Author Avatar Url//
-			$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
-		}
+			if(filter_var($newAuthorAvatarUrl, FILTER_VALIDATE_URL)) {
+				$this->AuthorAvatarUrl = $newAuthorAvatarUrl;
+			}
 
 	/**accessor method for obtaining
 	 * @var string authorActivationToken
@@ -139,12 +142,13 @@ class Author implements \JsonSerializable {
 	 * @throw \TypeError if type is not a string
 	 **/
 	public function setAuthorActivationToken(string $newAuthorActivationToken) {
-
+			$newAuthorActivationToken = trim($newAuthorActivationToken);
 			$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
 			//if string is too long throw range exception//
-			if(strlen($newAuthorActivationToken)) {
-				throw (new \TypeError("Invalid length"));
+			if(strlen($newAuthorActivationToken) > 32) {
+				throw (new \RangeException("Invalid length"));
 			}
+			//if argument is not a string, throw type exception//
 			$this->AuthorActivationToken = $newAuthorActivationToken;
 		}
 
