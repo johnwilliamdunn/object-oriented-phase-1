@@ -260,7 +260,7 @@ class Author implements \JsonSerializable {
 	public function insert(\PDO $pdo) : void {
 
 		// create query template
-		$query = "INSERT INTO tweet(tweetId,tweetProfileId, tweetContent, tweetDate) VALUES(:tweetId, :tweetProfileId, :tweetContent, :tweetDate)";
+		$query = "INSERT INTO author(authorId,authorAvatarUrl, authorActivationToken, authorEmail, authorHash, authorUsername) VALUES(:authorId, :authorAvatarId, :authorActivationToken, :authorEmail, :authorHash, :authorUsername)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
