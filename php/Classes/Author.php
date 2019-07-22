@@ -270,7 +270,24 @@ class Author implements \JsonSerializable {
 
 	}
 
-		
+	/**
+	 * deletes this Profile from mySql
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 *
+	 *
+	 */
+	public function delete(\PDO $pdo): void {
+
+		//create query template//
+		$query = "DELETE FROM author WHERE authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the placeholders in the template
+		$parameters
+	}
 
 
 
