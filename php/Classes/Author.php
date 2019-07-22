@@ -266,7 +266,7 @@ class Author implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		$parameters = ["authorId" => $this->authorId->getBytes(), "authorActivationUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUserName];
-		$statement-execute($parameters);
+		$statement->execute($parameters);
 
 	}
 
@@ -287,7 +287,7 @@ class Author implements \JsonSerializable {
 		//bind the member variables to the place holders in the template
 
 		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUsername];
-		$statement = $pdo-execute($parameters);
+		$statement = $pdo->execute($parameters);
 	}
 
 
