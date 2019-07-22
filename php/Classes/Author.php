@@ -1,15 +1,16 @@
 <?php
+
 namespace Jdunn\ObjectOriented;
 
 require_once("Autoload.php");
-require_once (dirname(__DIR__) . "/vendor/autoload.php");
+require_once(dirname(__DIR__) . "/vendor/autoload.php");
 
 //use Deepdivedylan\DataDesign\ValidateDate;
 use Ramsey\Uuid\Uuid;
 
 /**Class Author
-* @package Jdunn\ObjectOriented
-**/
+ * @package Jdunn\ObjectOriented
+ **/
 class Author implements \JsonSerializable {
 	use ValidateUuid;
 	use ValidateDate;
@@ -109,19 +110,19 @@ class Author implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
 	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
 	 **/
-	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl) : void {
+	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl): void {
 
-			//validate url for author//
-			$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
-			$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
+		//validate url for author//
+		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
+		$newAuthorAvatarUrl = filter_var($newAuthorAvatarUrl, FILTER_SANITIZE_URL, FILTER_FLAG_NO_ENCODE_QUOTES);
 
-			if(strlen($newAuthorAvatarUrl) > 255) {
-				throw (new \RangeException("image url is too large"));
-			}
-			//store Author Avatar Url//
-				$this->authorAvatarUrl = $newAuthorAvatarUrl;
-
+		if(strlen($newAuthorAvatarUrl) > 255) {
+			throw (new \RangeException("image url is too large"));
 		}
+		//store Author Avatar Url//
+		$this->authorAvatarUrl = $newAuthorAvatarUrl;
+
+	}
 
 	/**accessor method for obtaining
 	 * @return string value authorActivationToken
@@ -186,7 +187,8 @@ class Author implements \JsonSerializable {
 		$this->authorEmail = $newAuthorEmail;
 	}
 
-	/**accessor method for obtaining authorHash
+	/**
+	 * accessor method for obtaining authorHash
 	 * @var string authorHash
 	 **/
 
@@ -195,7 +197,7 @@ class Author implements \JsonSerializable {
 	}
 
 	/**
-	 *mutator for Hash/passwrd
+	 * mutator for Hash/passwrd
 	 *
 	 * @param string $newProfileHash
 	 * @throws \InvalidArgumentException if the hash is not secure
@@ -222,7 +224,8 @@ class Author implements \JsonSerializable {
 		$this->authorHash = $newAuthorHash;
 	}
 
-	/**accessor method for authorUsername
+	/**
+	 * accessor method for authorUsername
 	 * @return string authorUserName
 	 **/
 
@@ -230,61 +233,64 @@ class Author implements \JsonSerializable {
 		return $this->authorUsername;
 	}
 
-		/**
-		 * mutator for author user name
-		 *
-		 * @param string $newAuthorUserName username provided by user
-		 * @throws \RangeException
-		 * @throws \TypeError if value type is not correct
-		 **/
+	/**
+	 * mutator for author user name
+	 *
+	 * @param string $newAuthorUserName username provided by user
+	 * @throws \RangeException
+	 * @throws \TypeError if value type is not correct
+	 **/
 
-		   public function setAuthorUserName($newAuthorUserName) {
-			$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
-			//if character string is too long throw exception//
-			if(strlen($newAuthorUserName) > 32) {
-				throw(new \RangeException("invalid, exceeds length (32 characters"));
-
-			}
-			$this->authorUsername = $newAuthorUserName;
-
+	public function setAuthorUserName($newAuthorUserName) {
+		$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
+		//if character string is too long throw exception//
+		if(strlen($newAuthorUserName) > 32) {
+			throw(new \RangeException("invalid, exceeds length (32 characters"));
 		}
+		$this->authorUsername = $newAuthorUserName;
+
+	}
 
 
 	/**
-	 * inserts this Tweet into mySQL
+	 * inserts this Author into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 **/
-	public function insert(\PDO $pdo) : void {
-
-		// create query template
-		$query = "INSERT INTO author(authorId,authorAvatarUrl, authorActivationToken, authorEmail, authorHash, authorUsername) VALUES(:authorId, :authorAvatarId, :authorActivationToken, :authorEmail, :authorHash, :authorUsername)";
+	public function insert(\PDO $pdo): void {
+		//create query template//
+		$query = "INSERT INTO author(authorId, authorActivationUrl, authorActivationToken, authorEmail, authorHash, authorUsername) 
+		VALUES (:authorId, :authorActivationUrl, :authorActivationToken, :authorEmail, :authorHash, :authorUserName)";
 		$statement = $pdo->prepare($query);
 
-		// bind the member variables to the place holders in the template
-		$formattedDate = $this->tweetDate->format("Y-m-d H:i:s.u");
-		$parameters = ["tweetId" => $this->tweetId->getBytes(), "tweetProfileId" => $this->tweetProfileId->getBytes(), "tweetContent" => $this->tweetContent, "tweetDate" => $formattedDate];
-		$statement->execute($parameters);
+		$parameters = ["authorId" => $this->authorId->getBytes(), "authorActivationUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUsername];
+		$statement-execute($parameters);
+
 	}
 
+		
 
 
-		/**
-		 * formats the state variables for JSON serialization
-		 *
-		 * @return array resulting state variables to serialize
-		 **/
 
-		public function jsonSerialize(): array {
-			$fields = get_object_vars($this);
 
-			$fields["authorId"] = $this->authorId->toString();
 
-			return ($fields);
 
-		}
+	/**
+	 * formats the state variables for JSON serialization
+	 *
+	 * @return array resulting state variables to serialize
+	 **/
+
+	public function jsonSerialize(): array {
+		$fields = get_object_vars($this);
+
+		$fields["authorId"] = $this->authorId->toString();
+
+		return ($fields);
+
+	}
 
 
 }
