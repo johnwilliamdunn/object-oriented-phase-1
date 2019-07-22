@@ -315,7 +315,27 @@ class Author implements \JsonSerializable {
 	}
 
 
+	/**
+	 * gets Author by authorId
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param Uuid|string $authorId author id to search for
+	 * @return Author|null author found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when a variable are not the correct data type
+	 *
+	 **/
+		public static function getAuthorByAuthorId(\PDO $pdo, $authorId) : ?Author {
+			//sanitize the authorId before searching//
+			try {
+					$authorId = self::validateUuid($authorId);
+			} catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+						throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
 
+			//create query template//
+			$query = "SELECT authorId, authorAvatarUrl, "
+		}
 
 
 
