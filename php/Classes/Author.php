@@ -261,24 +261,48 @@ class Author implements \JsonSerializable {
 	 **/
 	public function insert(\PDO $pdo): void {
 		//create query template//
-		$query = "INSERT INTO author(authorId, authorActivationUrl, authorActivationToken, authorEmail, authorHash, authorUsername) 
-		VALUES (:authorId, :authorActivationUrl, :authorActivationToken, :authorEmail, :authorHash, :authorUserName)";
+		$query = "INSERT INTO author(authorId, authorAvatarUrl, authorActivationToken, authorEmail, authorHash, authorUserName) 
+		VALUES (:authorId, :authorAvatarUrl, :authorActivationToken, :authorEmail, :authorHash, :authorUserName)";
 		$statement = $pdo->prepare($query);
 
-		$parameters = ["authorId" => $this->authorId->getBytes(), "authorActivationUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUsername];
+		$parameters = ["authorId" => $this->authorId->getBytes(), "authorActivationUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUserName];
 		$statement-execute($parameters);
 
 	}
 
+
 	/**
-	 * deletes this Profile from mySql
+	 * updates this Author from mySQL
+	 *
+	 * #param \PDO $pdo PDO connection object
+	 * #throws \PDOException when mySQL related errors occur
+	 *
+	 **/
+	public function update(\PDO $pdo): void {
+
+		//create query template//
+		$query = "UPDATE author SET authorAvatarUrl = :authorAvatarUrl, authorActivationToken = :authorActivationToken, authorEmail = :authorEmail, authorHash = :authorHash, authorUserName = :authorUserName WHERE  authorId = :authorId";
+		$statement = $pdo->prepare($query);
+
+		//bind the member variables to the place holders in the template
+
+		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUsername];
+		$statement = $pdo-execute($parameters);
+	}
+
+
+
+
+
+	/**
+	 * deletes this Author from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError if $pdo is not a PDO connection object
 	 *
 	 *
-	 */
+	 **/
 	public function delete(\PDO $pdo): void {
 
 		//create query template//
@@ -286,7 +310,8 @@ class Author implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		//bind the member variables to the placeholders in the template
-		$parameters
+		$parameters = ["authorId" => $this->authorId->getBytes()];
+		$statement->execute($parameters);
 	}
 
 
