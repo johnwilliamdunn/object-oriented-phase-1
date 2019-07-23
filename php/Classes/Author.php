@@ -375,7 +375,7 @@ class Author implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$author = new Author($row["authorUserName"], $row["authorId"]);
+				$author = new author($row["authorUserName"], $row["authorId"]);
 				$author[$author->key()] = $author;
 				$author->next();
 
