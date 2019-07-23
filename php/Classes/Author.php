@@ -5,7 +5,6 @@ namespace Jdunn\ObjectOriented;
 require_once("Autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 
-//use Deepdivedylan\DataDesign\ValidateDate;
 use Ramsey\Uuid\Uuid;
 
 /**Class Author
@@ -13,7 +12,6 @@ use Ramsey\Uuid\Uuid;
  **/
 class Author implements \JsonSerializable {
 	use ValidateUuid;
-	use ValidateDate;
 
 	/**
 	 * id for the author; this is the primary key
@@ -65,7 +63,7 @@ class Author implements \JsonSerializable {
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
 		} //determine what exception type was thrown
-		catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
+		catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -99,7 +97,7 @@ class Author implements \JsonSerializable {
 	/**accessor method for obtaining author avatar id
 	 * @return  string value of $authorAvatarUrl
 	 **/
-	public function getAuthorAvatarUrl(): string {
+	public function getAuthorAvatarUrl(): ?string {
 		return ($this->authorAvatarUrl);
 	}
 
@@ -110,7 +108,7 @@ class Author implements \JsonSerializable {
 	 * @throws \InvalidArgumentException if $setAuthorAvatarUrl is not a string or insecure
 	 * @throws \RangeException if $setAuthorAvatarUrl is > 140 characters
 	 **/
-	public function setAuthorAvatarUrl(string $newAuthorAvatarUrl): void {
+	public function setAuthorAvatarUrl(?string $newAuthorAvatarUrl): void {
 
 		//validate url for author//
 		$newAuthorAvatarUrl = trim($newAuthorAvatarUrl);
@@ -140,7 +138,7 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if type is not a string
 	 **/
 	public
-	function setAuthorActivationToken(string $newAuthorActivationToken) {
+	function setAuthorActivationToken(?string $newAuthorActivationToken) {
 		$newAuthorActivationToken = trim($newAuthorActivationToken);
 		$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
 		//if string is too long throw range exception//
@@ -159,7 +157,7 @@ class Author implements \JsonSerializable {
 	 * @return  string authorEmail
 	 **/
 
-	public function getAuthoremail() {
+	public function getAuthorEmail() {
 		return ($this->authorEmail);
 	}
 
@@ -172,7 +170,7 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if $newEmail is not a string
 	 **/
 
-	public function setAuthorEmail(string $newAuthorEmail): void {
+	public function setAuthorEmail(?string $newAuthorEmail): void {
 		// verify the email is secure
 		$newAuthorEmail = trim($newAuthorEmail);
 		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
@@ -205,7 +203,7 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if profile hash is not a string
 	 */
 
-	public function setAuthorHash(string $newAuthorHash): void {
+	public function setAuthorHash(?string $newAuthorHash): void {
 		//enforce that the hash is properly formatted
 		$newAuthorHash = trim($newAuthorHash);
 		if(empty($newAuthorHash) === true) {
@@ -229,7 +227,7 @@ class Author implements \JsonSerializable {
 	 * @return string authorUserName
 	 **/
 
-	public function getAuthorUsername(): string {
+	public function getAuthorUsername(): ?string {
 		return $this->authorUsername;
 	}
 
@@ -365,31 +363,31 @@ class Author implements \JsonSerializable {
 	 *
 	 */
 
-	public static function getAllAuthors(\PDO $pdo) : \SplFixedArray {
+	public static function getAllAuthors(\PDO $pdo): \SplFixedArray {
 
-			 //create query template//
+		//create query template//
 		$query = "SELECT authorId, authorAvatarUrl, authorUserName FROM author WHERE authorUserName = :authorUserName";
-		    $statement = $pdo->prepare($query);
-		    $statement->execute();
+		$statement = $pdo->prepare($query);
+		$statement->execute();
 
-		    //build an array of authors//
-			$author = new \SplFixedArray($statement->rowCount());
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			while(($row = $statement->fetch()) !== false) {
-				try {
-								$author = new Author($row["authorUserName"], $row["authorId"]);
-								$author[$author->key()] =$author;
-								$author->next();
+		//build an array of authors//
+		$author = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$author = new Author($row["authorUserName"], $row["authorId"]);
+				$author[$author->key()] = $author;
+				$author->next();
 
 
-				}catch(\Exception $exception) {
+			} catch(\Exception $exception) {
 
-					//if the row couldn't be converted, rethrow it
-					throw(new \PDOException(($exception->getMessage(), 0, $exception)));
+				//if the row couldn't be converted, rethrow it
+				throw(new \PDOException(($exception->getMessage(), 0, $exception)));
 				}
 
-			}
-			return ($author);
+		}
+		return ($author);
 	}
 
 	/**
