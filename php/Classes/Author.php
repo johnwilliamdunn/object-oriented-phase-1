@@ -251,7 +251,7 @@ class Author implements \JsonSerializable {
 
 
 	/**
-	 * inserts this Author into mySQL
+	 * inserts this author into mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -383,7 +383,7 @@ class Author implements \JsonSerializable {
 			} catch(\Exception $exception) {
 
 				//if the row couldn't be converted, rethrow it
-				throw(new \PDOException(($exception->getMessage(), 0, $exception)));
+				throw(new \PDOException(($exception->getMessage(), 0, $exception));
 				}
 
 		}
