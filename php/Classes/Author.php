@@ -5,6 +5,7 @@ namespace Jdunn\ObjectOriented;
 require_once("Autoload.php");
 require_once(dirname(__DIR__) . "/vendor/autoload.php");
 
+use http\Exception\InvalidArgumentException;
 use Ramsey\Uuid\Uuid;
 
 /**Class Author
@@ -54,7 +55,7 @@ class Author implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 **/
 
-	public function __construct($newAuthorId, $newAuthorAvatarUrl, $newAuthorActivationToken, $newAuthorEmail, $newAuthorHash, $newAuthorUsername) {
+	public function __construct($newAuthorId, ?string $newAuthorAvatarUrl, ?string $newAuthorActivationToken, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
 		try {
 			$this->setAuthorId($newAuthorId);
 			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
@@ -63,7 +64,7 @@ class Author implements \JsonSerializable {
 			$this->setAuthorHash($newAuthorHash);
 			$this->setAuthorUsername($newAuthorUsername);
 		} //determine what exception type was thrown
-		catch(\InvalidArgumentException |\RangeException |\Exception |\TypeError $exception) {
+		catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
 			$exceptionType = get_class($exception);
 			throw(new $exceptionType($exception->getMessage(), 0, $exception));
 		}
@@ -72,7 +73,7 @@ class Author implements \JsonSerializable {
 	/**accessor method for obtaining author id
 	 * @return  string $authorId
 	 **/
-	public function getAuthorId() : string {
+	public function getAuthorId() : Uuid {
 		return ($this->authorId);
 	}
 
@@ -97,7 +98,7 @@ class Author implements \JsonSerializable {
 	/**accessor method for obtaining author avatar id
 	 * @return  string value of $authorAvatarUrl
 	 **/
-	public function getAuthorAvatarUrl() : string {
+	public function getAuthorAvatarUrl() : ?string {
 		return ($this->authorAvatarUrl);
 	}
 
@@ -126,7 +127,7 @@ class Author implements \JsonSerializable {
 	 * @return string value authorActivationToken
 	 **/
 	public
-	function getAuthorActivationToken() : string {
+	function getAuthorActivationToken() : ?string {
 		return ($this->authorActivationToken);
 	}
 
@@ -136,19 +137,27 @@ class Author implements \JsonSerializable {
 	 * @param string $newAuthorActivationToken author verification token
 	 * @throws \RangeException if exceeds character limit
 	 * @throws \TypeError if type is not a string
+	 * @throws \InvalidArgumentException author activation token is not valid
 	 **/
 	public
-	function setAuthorActivationToken(?string $newAuthorActivationToken) {
-		$newAuthorActivationToken = trim($newAuthorActivationToken);
+	function setAuthorActivationToken(?string $newAuthorActivationToken) : void {
+		//base case, checking for null//
+		if ($newAuthorActivationToken === null) {
+			$this->authorActivationToken = null;
+			return;
+		}
+
+		$newAuthorActivationToken = strtolower(trim($newAuthorActivationToken));
+		if(ctype_xdigit($newAuthorActivationToken) === false) {
+			throw(new\InvalidArgumentException("author activation token is not valid"));
+		}
 		$newAuthorActivationToken = filter_var($newAuthorActivationToken, FILTER_SANITIZE_STRING);
 		//if string is too long throw range exception//
-		if(strlen($newAuthorActivationToken) > 32) {
-			throw (new \RangeException("Invalid length"));
+		if(strlen($newAuthorActivationToken) !== 32) {
+			throw (new \RangeException("User activation token has to be 32"));
 		}
-		//if argument is not a string, throw type exception//
-		if(!is_string($newAuthorActivationToken)) {
-			throw(new\TypeError("Invalid type, expected type string"));
-		}
+
+
 
 		$this->authorActivationToken = $newAuthorActivationToken;
 	}
@@ -170,7 +179,7 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if $newEmail is not a string
 	 **/
 
-	public function setAuthorEmail(?string $newAuthorEmail): void {
+	public function setAuthorEmail(string $newAuthorEmail): void {
 		// verify the email is secure
 		$newAuthorEmail = trim($newAuthorEmail);
 		$newAuthorEmail = filter_var($newAuthorEmail, FILTER_VALIDATE_EMAIL);
@@ -203,7 +212,7 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if profile hash is not a string
 	 */
 
-	public function setAuthorHash(?string $newAuthorHash): void {
+	public function setAuthorHash(string $newAuthorHash): void {
 		//enforce that the hash is properly formatted
 		$newAuthorHash = trim($newAuthorHash);
 		if(empty($newAuthorHash) === true) {
