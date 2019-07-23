@@ -358,40 +358,38 @@ class Author implements \JsonSerializable {
 	 * gets authors by authorUserName
 	 *
 	 * @param \PDO $pdo PDO connection object
-	 * @param Uuid|string $authorUserName author id to search by
+	 * @param \SplFixedArray SplFixedArray of Authors found or null if not found
 	 * @return \SplFixedArray SplFixedArray of authors found
 	 * @throws \PDOException when mySQL related errors occur
 	 * @throws \TypeError when variables are not the correct data type
 	 *
 	 */
 
-	public static function getAuthorNameByAuthorUserName(\PDO $pdo, $authorUserName) : \SplFixedArray {
-		    try {
-		    			$authorUserName = self: self::validateUuid($authorId);
-			 } catch(\InvalidArgumentException | \RangeException | \Exception | \TypeError $exception) {
-		    	     throw(new \PDOException($exception->getMessage(), 0, $exception));
-			 }
+	public static function getAllAuthors(\PDO $pdo) : \SplFixedArray {
 
 			 //create query template//
-		$query = "SELECT authorId, authorAvatarUrl, authorUserName FROM author WHERE authorId = :authorId";
+		$query = "SELECT authorId, authorAvatarUrl, authorUserName FROM author WHERE authorUserName = :authorUserName";
 		    $statement = $pdo->prepare($query);
-		    //bind the author id to the place holder in the template//
-		$parameters = ["authorId" => $authorId->getBytes()];
-		$statement->execute($parameters);
-		//build an array of author names//
-		$authorUserName = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-							$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row["authorUserName"]);
-							$authorUserName[$authorId->key()] = $authorId;
-							$authorUserName->next();
-			}    catch(\Exception $exception) {
-							//if the row couldn't be converted, rethrow it//
-							throw(new \PDOException($exception->getMessage(), 0, $exception));
+		    $statement->execute();
+
+		    //build an array of authors//
+			$author = new \SplFixedArray($statement->rowCount());
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			while(($row = $statement->fetch()) !== false) {
+				try {
+								$author = new Author($row["authorUserName"], $row["authorId"]);
+								$author[$author->key()] =$author;
+								$author->next();
+
+
+				}catch(\Exception $exception) {
+
+					//if the row couldn't be converted, rethrow it
+					throw(new \PDOException(($exception->getMessage(), 0, $exception)));
+				}
+
 			}
-		}
-		return($authorId);
+			return ($author);
 	}
 
 	/**
