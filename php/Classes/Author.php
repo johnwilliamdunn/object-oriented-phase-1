@@ -358,7 +358,7 @@ class Author implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row ["authorActivationToken"], $row["authorEmail"], $tow["authorHash", $row["authorUserName"]);
+				$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row ["authorActivationToken"], $row["authorEmail"], $tow["authorHash"], $row["authorUserName"]);
 
 			}
 		} catch(\Exception $exception) {
@@ -399,8 +399,8 @@ class Author implements \JsonSerializable {
 			} catch(\Exception $exception) {
 
 				//if the row couldn't be converted, rethrow it
-				throw(new \PDOException(($exception->getMessage(), 0, $exception));
-				}
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
 
 		}
 		return ($authors);
