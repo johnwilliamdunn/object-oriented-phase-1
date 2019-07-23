@@ -38,7 +38,7 @@ class Author implements \JsonSerializable {
 	/** authorUsername provides unique sign on name
 	 * @var  string $authorUsername ;
 	 **/
-	private $authorUsername;
+	private $authorUserName;
 
 	/**
 	 * constructor for Author
@@ -55,14 +55,14 @@ class Author implements \JsonSerializable {
 	 * @throws \Exception if some other exception occurs
 	 **/
 
-	public function __construct($newAuthorId, ?string $newAuthorAvatarUrl, ?string $newAuthorActivationToken, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUsername) {
+	public function __construct($newAuthorId, ?string $newAuthorAvatarUrl, ?string $newAuthorActivationToken, string $newAuthorEmail, string $newAuthorHash, string $newAuthorUserName) {
 		try {
 			$this->setAuthorId($newAuthorId);
 			$this->setAuthorAvatarUrl($newAuthorAvatarUrl);
 			$this->setAuthorActivationToken($newAuthorActivationToken);
 			$this->setAuthorEmail($newAuthorEmail);
 			$this->setAuthorHash($newAuthorHash);
-			$this->setAuthorUsername($newAuthorUsername);
+			$this->setAuthorUserName($newAuthorUserName);
 		} //determine what exception type was thrown
 		catch(\InvalidArgumentException | \RangeException | \TypeError | \Exception $exception) {
 			$exceptionType = get_class($exception);
@@ -232,12 +232,12 @@ class Author implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for authorUsername
+	 * accessor method for authorUserName
 	 * @return string authorUserName
 	 **/
 
-	public function getAuthorUsername() : string {
-		return $this->authorUsername;
+	public function getAuthorUserName() : string {
+		return $this->authorUserName;
 	}
 
 	/**
@@ -248,13 +248,20 @@ class Author implements \JsonSerializable {
 	 * @throws \TypeError if value type is not correct
 	 **/
 
-	public function setAuthorUserName($newAuthorUserName) {
-		$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING);
+	public function setAuthorUserName(string $newAuthorUserName) : void	{
+		//verification the handle is secure//
+		$newAuthorUserName = trim($newAuthorUserName);
+		$newAuthorUserName = filter_var($newAuthorUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		if(empty($newAuthorUserName) === true) {
+			throw(new \InvalidArgumentException("profile at handle is empty or insecure"));
+
+		}
 		//if character string is too long throw exception//
 		if(strlen($newAuthorUserName) > 32) {
 			throw(new \RangeException("invalid, exceeds length (32 characters"));
 		}
-		$this->authorUsername = $newAuthorUserName;
+		$this->authorUserName = $newAuthorUserName;
 
 	}
 
@@ -272,7 +279,7 @@ class Author implements \JsonSerializable {
 		VALUES (:authorId, :authorAvatarUrl, :authorActivationToken, :authorEmail, :authorHash, :authorUserName)";
 		$statement = $pdo->prepare($query);
 
-		$parameters = ["authorId" => $this->authorId->getBytes(), "authorActivationUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUserName];
+		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUserName];
 		$statement->execute($parameters);
 
 	}
@@ -293,7 +300,7 @@ class Author implements \JsonSerializable {
 
 		//bind the member variables to the place holders in the template
 
-		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUsername];
+		$parameters = ["authorId" => $this->authorId->getBytes(), "authorAvatarUrl" => $this->authorAvatarUrl, "authorActivationToken" => $this->authorActivationToken, "authorEmail" => $this->authorEmail, "authorHash" => $this->authorHash, "authorUserName" => $this->authorUserName];
 		$statement = $pdo->execute($parameters);
 	}
 
@@ -351,7 +358,7 @@ class Author implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row["authorUserName"]);
+				$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row ["authorActivationToken"], $row["authorEmail"], $tow["authorHash", $row["authorUserName"]);
 
 			}
 		} catch(\Exception $exception) {
@@ -362,7 +369,7 @@ class Author implements \JsonSerializable {
 	}
 
 	/**
-	 * gets authors by authorUserName
+	 * gets authors by get by user name
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param \SplFixedArray SplFixedArray of Authors found or null if not found
@@ -375,18 +382,18 @@ class Author implements \JsonSerializable {
 	public static function getAllAuthors(\PDO $pdo): \SplFixedArray {
 
 		//create query template//
-		$query = "SELECT authorId, authorAvatarUrl, authorUserName FROM author WHERE authorUserName = :authorUserName";
+		$query = "SELECT authorId, authorAvatarUrl, authorActivationToken, authorEmail, authorHash, authorUserName FROM author";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
 		//build an array of authors//
-		$author = new \SplFixedArray($statement->rowCount());
+		$authors = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$author = new author($row["authorUserName"], $row["authorId"]);
-				$author[$author->key()] = $author;
-				$author->next();
+				$author = new Author($row["authorId"], $row["authorAvatarUrl"], $row[ "authorActivationToken"], $row["authorEmai"], $row["authorHash"],$row["authorUserName"]);
+				$authors[$authors->key()] = $author;
+				$authors->next();
 
 
 			} catch(\Exception $exception) {
@@ -396,7 +403,7 @@ class Author implements \JsonSerializable {
 				}
 
 		}
-		return ($author);
+		return ($authors);
 	}
 
 	/**
@@ -409,6 +416,8 @@ class Author implements \JsonSerializable {
 		$fields = get_object_vars($this);
 
 		$fields["authorId"] = $this->authorId->toString();
+		unset($fields["authorActivationToken"]);
+		unset($fields["authorHash"]);
 
 		return ($fields);
 
